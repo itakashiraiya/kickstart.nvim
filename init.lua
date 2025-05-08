@@ -246,7 +246,24 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'tpope/vim-fugitive',
-
+  -- {
+  --   'christoomey/vim-tmux-navigator',
+  --   cmd = {
+  --     'TmuxNavigateLeft',
+  --     'TmuxNavigateDown',
+  --     'TmuxNavigateUp',
+  --     'TmuxNavigateRight',
+  --     'TmuxNavigatePrevious',
+  --     'TmuxNavigatorProcessList',
+  --   },
+  --   keys = {
+  --     { '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>' },
+  --     { '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>' },
+  --     { '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>' },
+  --     { '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>' },
+  --     { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
+  --   },
+  -- },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.

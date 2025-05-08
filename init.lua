@@ -227,9 +227,25 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
+vim.diagnostic.config {
+  virtual_text = true,
+  signs = true,
+  update_in_insert = false,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focusable = false,
+    style = 'minimal',
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
+}
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-fugitive',
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -616,6 +632,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
+        ocamllsp = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -633,6 +650,13 @@ require('lazy').setup({
           -- capabilities = {},
           settings = {
             Lua = {
+              workspace = {
+                library = {
+                  vim.fn.expand '/usr/local/share/lua/5.4',
+                  vim.fn.expand '~/dev/lua/packages',
+                },
+                checkThirdParty = false,
+              },
               completion = {
                 callSnippet = 'Replace',
               },

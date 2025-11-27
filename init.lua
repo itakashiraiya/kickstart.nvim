@@ -278,6 +278,10 @@ require('lazy').setup({
   --    require('gitsigns').setup({ ... })
   --
   -- See `:help gitsigns` to understand what the configuration keys do
+  {
+    'VPavliashvili/json-nvim',
+    ft = 'json', -- only load for json filetype
+  },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -662,12 +666,15 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        'nil_ls',
         'clangd',
         -- 'gopls',
         'ocamllsp',
         -- 'pyright',
         'rust_analyzer',
         'lua_ls',
+        'jdtls',
+        'kotlin_lsp',
       }
 
       for _, name in ipairs(servers) do

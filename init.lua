@@ -244,28 +244,53 @@ vim.diagnostic.config {
     prefix = '',
   },
 }
+local latex_build_path = 'latex'
+vim.g.vimtex_compiler_latexmk = {
+  out_dir = latex_build_path,
+  executable = 'latexmk',
+  options = {
+    '-pdf',
+    '-interaction=nonstopmode',
+    '-synctex=1',
+    '-outdir=' .. latex_build_path, -- keep your folder clean
+  },
+}
+vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_compiler_progname = 'nvr'
 require('lazy').setup({
+  { 'lervag/vimtex', ft = 'tex' },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'tpope/vim-fugitive',
-  -- {
-  --   'christoomey/vim-tmux-navigator',
-  --   cmd = {
-  --     'TmuxNavigateLeft',
-  --     'TmuxNavigateDown',
-  --     'TmuxNavigateUp',
-  --     'TmuxNavigateRight',
-  --     'TmuxNavigatePrevious',
-  --     'TmuxNavigatorProcessList',
-  --   },
-  --   keys = {
-  --     { '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>' },
-  --     { '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>' },
-  --     { '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>' },
-  --     { '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>' },
-  --     { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
-  --   },
-  -- },
+  {
+    'stevearc/oil.nvim',
+    config = function()
+      require('oil').setup {
+        vim.keymap.set('n', '<leader>o', require('oil').open, { desc = 'Open [O]il' }),
+        restore_cursor = true,
+        skip_confirm_for_simple_edits = true,
+        columns = { 'icon' },
+      }
+    end,
+  },
+  {
+    'christoomey/vim-tmux-navigator',
+    cmd = {
+      'TmuxNavigateLeft',
+      'TmuxNavigateDown',
+      'TmuxNavigateUp',
+      'TmuxNavigateRight',
+      'TmuxNavigatePrevious',
+      'TmuxNavigatorProcessList',
+    },
+    keys = {
+      { '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>' },
+      { '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>' },
+      { '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>' },
+      { '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>' },
+      { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
+    },
+  },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -490,6 +515,8 @@ require('lazy').setup({
     },
   },
   { 'Bilal2453/luvit-meta', lazy = true },
+
+  -- TODO: Refactor to a separate lsp folder
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
@@ -665,16 +692,19 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      --
       local servers = {
-        'nil_ls',
         'clangd',
-        -- 'gopls',
-        'ocamllsp',
-        -- 'pyright',
-        'rust_analyzer',
-        'lua_ls',
         'jdtls',
         'kotlin_lsp',
+        'lua_ls',
+        'nil_ls',
+        'ocamllsp',
+        'rust_analyzer',
+        'ts_ls',
+        'zls',
+        -- 'gopls',
+        -- 'pyright',
       }
 
       for _, name in ipairs(servers) do
@@ -690,13 +720,13 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
       })
 
-      for _, name in ipairs(servers) do
-        local tool = vim.lsp.config[name].cmd[1]
-        local code = os.execute("which '" .. tool .. "'")
-        if code ~= 0 then
-          vim.notify(name .. ' is not installed!!', vim.log.levels.ERROR)
-        end
-      end
+      -- for _, name in ipairs(servers) do
+      --   local tool = vim.lsp.config[name].cmd[1]
+      --   local code = os.execute("which '" .. tool .. "'")
+      --   if code ~= 0 then
+      --     vim.notify(name .. ' is not installed!!', vim.log.levels.ERROR)
+      --   end
+      -- end
     end,
   },
 
@@ -993,3 +1023,6 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1

@@ -7,8 +7,8 @@ local function format_macro(macro_lines, last_line)
     end
   end
   for i, line in ipairs(macro_lines) do
-    local pad = max_len - vim.fn.strdisplaywidth(line) + line:len()
-    macro_lines[i] = string.format("%-" .. pad .. "s \\", line)
+    local pad = max_len - vim.fn.strdisplaywidth(line)
+    macro_lines[i] = line .. string.rep(" ", pad + 1) .. "\\"
   end
 end
 
